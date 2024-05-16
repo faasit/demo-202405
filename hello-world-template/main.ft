@@ -1,0 +1,51 @@
+import (
+  "std/faas"
+)
+
+block event {
+  input = {
+    type = string
+    data = type
+  }
+}
+
+@event EchoEvent {
+  type = "example.echo"
+  data = {
+    status = string
+    data = any
+  }
+}
+
+@function EchoFunction {
+  runtime = "nodejs"
+  codeDir = "./code"
+  resource = {
+    cpu = "1024m"
+    memory = "128Mi"
+  }
+  pubsub = {
+    events = [EchoEvent]
+  }
+}
+
+@application EchoServer {
+  functions = [EchoFunction]
+  providers = [knative, aliyun]
+  defaultProvider = knative
+  inputExamples = [
+    {
+      value = {
+        data = "hello, world!"
+      }
+    }
+  ]
+}
+
+@provider knative {
+  kind = "knative"
+}
+
+@provider aliyun {
+  kind = "aliyun"
+}
