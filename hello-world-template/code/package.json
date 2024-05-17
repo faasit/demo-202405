@@ -6,8 +6,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@faasit/runtime": "^1.2.0"
-  },
-  "dependencies": {}
+  "dependencies": {
+    "@faasit/runtime": "file:../../../faasit/packages/faasit-runtime/javascript"
+  }
 }

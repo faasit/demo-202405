@@ -17,7 +17,7 @@ block event {
   }
 }
 
-@function EchoFunction {
+@function EchoF {
   runtime = "nodejs"
   codeDir = "./code"
   resource = {
@@ -29,8 +29,8 @@ block event {
   }
 }
 
-@application EchoServer {
-  functions = [EchoFunction]
+@application Echo {
+  functions = [EchoF]
   providers = [knative, aliyun]
   defaultProvider = knative
   inputExamples = [
