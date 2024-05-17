@@ -1,0 +1,49 @@
+import (
+  . "std/faas"
+)
+
+@workflow Flow {
+  functions = []
+
+  // workflow spec runtime
+  runtime = "nodejs"
+  codeDir = "./javascript"
+}
+
+@application App {
+  workflow = Flow
+  providers = [aliyun, knative]
+  defaultProvider = knative
+
+  // used by `ft run`
+  inputExamples = [
+    {
+      value = {
+        task = "durChain"
+      }
+    },
+    {
+      value = {
+        task = "durLoop"
+      }
+    },
+    {
+      value = {
+        task = "durParallel"
+      }
+    },
+    {
+      value = {
+        task = "durRecursive"
+      }
+    },
+  ]
+}
+
+@provider aliyun {
+  kind = "local"
+}
+
+@provider knative {
+  kind = "knative"
+}

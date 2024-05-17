@@ -1,0 +1,13 @@
+{
+  "name": "dag-wordcount-mixed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "workflow.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faasit/runtime": "^1.2.0",
+    "numeric": "^1.2.6"
+  }
+}
