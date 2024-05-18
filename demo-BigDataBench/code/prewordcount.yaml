@@ -1,0 +1,53 @@
+app_name: wordcount
+template: template.yaml
+
+
+node_resources:
+  node1:
+    vcpu: 10
+  node2:
+    vcpu: 10
+
+image_coldstart_latency: 
+  xbzondocker/serverless-wordcount:latest: 1.5
+
+# If you want to modify num_mappers and num_redcuers, remember to modify request:vcpu && relica.  
+stage_profiles:
+  stage0:
+    request: 
+      vcpu: 1 # For one pod.
+    input_time: 0.897621768002864
+    compute_time: 9.403541503008455
+    output_time: 0.00458070999593474
+
+    replicas: 4
+
+    # Port is not needed in preterasort.
+    # It will be allocated later by preprocess.py
+    image: xbzondocker/serverless-wordcount:latest
+    command: '["/bin/bash"]'
+    args: '["-c", "cd / && PYTHONPATH=${PYTHONPATH}:/serverlessFramework python3 /serverlessFramework/worker.py /root/lambda_function.py mapper_handler --port __port__ --cache_server_port __cache_port__"]'
+
+
+
+  stage1:
+    request: 
+      vcpu: 1 # For one pod.
+    input_time: 0.004606483009411022
+    compute_time: 0.0031523499928880483
+    output_time: 0.0003984869981650263
+
+    replicas: 4
+
+    image: xbzondocker/serverless-wordcount:latest
+    command: '["/bin/bash"]'
+    args: '["-c", "cd / && PYTHONPATH=${PYTHONPATH}:/serverlessFramework python3 /serverlessFramework/worker.py /root/lambda_function.py reducer_handler --port __port__ --cache_server_port __cache_port__"]'
+          
+
+input_source_data: "/mydata/Text_datagen/gen_data/big"
+
+DAG: # list dependencies
+  stage1:
+    - stage0
+  stage0: []
+
