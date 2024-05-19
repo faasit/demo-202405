@@ -19,7 +19,6 @@ import (
 }
 
 @workflow WordCountFlow {
-  // env.FAASIT_WORKFLOW_FUNC = split
   functions = [threaded_output_function, threaded_input_function, mapper_handler, reducer_handler]
 
   // workflow spec runtime
@@ -29,8 +28,8 @@ import (
 
 @application WordCount {
   workflow = WordCountFlow
-  defaultProvider = Local
-  providers= [Local, Knative]
+  defaultProvider = Aliyun
+  providers= [Local, Knative, Aliyun]
 
   // used by `ft run`
   inputExamples = [
@@ -49,4 +48,8 @@ import (
 
 @provider Knative {
   kind = "knative"
+}
+
+@provider Aliyun {
+  kind = "aliyun"
 }
