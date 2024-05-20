@@ -3,3 +3,9 @@ demo-BigDataBench/code/wordcount.yaml
 __pycache__
 local_storage
 .env
+*.egg-info
+.local
+
+# e2e-2024-03/Runtime
+text.txt
+kn_func.yaml
