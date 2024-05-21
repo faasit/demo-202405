@@ -10,3 +10,5 @@ __pycache__
 text.txt
 kn_func.yaml
 local_storage
+!demo-chatbot/code/local_storage/
+tmp
