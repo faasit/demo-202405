@@ -1,7 +1,7 @@
 node_modules
 demo-BigDataBench/code/wordcount.yaml
 __pycache__
-local_storage
+# local_storage
 .env
 *.egg-info
 .local

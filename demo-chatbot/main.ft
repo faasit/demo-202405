@@ -1,0 +1,62 @@
+import (
+    . "std/faas"
+)
+
+@function split {
+    runtime = 'python'
+}
+@function upload_BOW {
+    runtime = 'python'
+}
+@function train {
+    runtime = 'python'
+}
+@function load_bow {
+    runtime = 'python'
+}
+@function load_intents {
+    runtime = 'python'
+}
+@workflow ChatbotFlow {
+    functions = [split, upload_BOW, train, load_bow, load_intents]
+    runtime = 'python'
+    codeDir = './code'
+}
+@application Chatbot {
+    workflow = ChatbotFlow
+    defaultProvider = knative
+    provider = [knative, aliyun]
+    inputExamples = [
+        {
+            value = {
+                split = {
+                    bundle_size = 1
+                    skew = 1
+                    input = {
+                        indent = "Intent.json"
+                    }
+                    output = {
+                        bos = "bos.txt"
+                        list_of_indents = "list_of_intents"
+                    }
+                }
+                train = {
+                    input = {
+                        indent = "Intent.json"
+                        bos = "bos.txt"
+                        list_of_indents = "list_of_intents"
+                    }
+                    output = {
+                        params = "params.txt"
+                    }
+                }
+            }
+        }
+    ]
+}
+@provider knative {
+    kind = 'knative'
+}
+@provider aliyun {
+    kind = 'aliyun'
+}
