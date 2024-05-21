@@ -1,7 +1,6 @@
 @function hello {
   runtime = "python"
   codeDir = "./code"
-  triggers = []
   resource = {
     cpu = "1024m"
     memory = "128Mi"
@@ -11,8 +10,9 @@
   }
 }
 
-@application {
+@application PythonHello {
   functions = [hello]
+  providers = [Knative, Aliyun]
   defaultProvider = Knative
   inputExamples = [
     {
@@ -26,4 +26,8 @@
 
 @provider Knative {
   kind = "knative"
+}
+
+@provider Aliyun {
+  kind = "aliyun"
 }

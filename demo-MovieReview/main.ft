@@ -1,0 +1,68 @@
+import (
+  . "std/faas"
+)
+
+@function movie_info_register {
+  runtime = "python"
+}
+
+@function request {
+  runtime = "python"
+}
+
+@function user_login {
+  runtime = "python"
+}
+
+@function review_update {
+  runtime = "python"
+}
+
+@function recommend {
+  runtime = "python"
+}
+
+@function search {
+  runtime = "python"
+}
+
+@function collect_result {
+  runtime = "python"
+}
+
+@workflow MovieReview {
+  functions = [
+    movie_info_register,
+    request,
+    user_login,
+    review_update,
+    recommend,
+    search,
+    collect_result
+  ]
+
+  // workflow spec runtime
+  runtime = "python"
+  codeDir = "./code"
+}
+
+@application MovieReview {
+  workflow = MovieReview
+  defaultProvider = aliyun
+  providers= [knative, aliyun]
+
+  // used by `ft run`
+  inputExamples = [
+    {
+      value = {}
+    }
+  ]
+}
+
+@provider knative {
+  kind = "knative"
+}
+
+@provider aliyun {
+  kind = "aliyun"
+}
