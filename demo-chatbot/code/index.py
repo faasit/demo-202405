@@ -10,7 +10,8 @@ async def execute(frt: FaasitRuntime):
     split_params = _in['split']
     train_params = _in['train']
     await frt.call('split', split_params)
-    await frt.call('train', train_params)
+    r = await frt.call('train', train_params)
+    return frt.output(r)
 
 @workflow
 def chatbot(builder: WorkFlowBuilder):
