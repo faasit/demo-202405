@@ -64,13 +64,6 @@ ft deploy -p Knative
 ft invoke -p Aliyun
 ```
 
-调用在 Knative 上部署的函数
-
-- 调用`kn`上的函数
-
-```bash
-ft invoke -p Knative
-```
 
 上面展示了一个最基本的函数开发和部署流程，下面我们来看一个稍微复杂的例子，该例子支持多函数编排和状态持久化功能。
 
