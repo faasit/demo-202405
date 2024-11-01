@@ -12,7 +12,7 @@
 
 @application PythonHello {
   functions = [hello]
-  providers = [Knative, Aliyun]
+  providers = [Knative, Aliyun, K8s]
   defaultProvider = Knative
   inputExamples = [
     {
@@ -30,4 +30,8 @@
 
 @provider Aliyun {
   kind = "aliyun"
+}
+
+@provider K8s {
+  kind = "k8s"
 }
