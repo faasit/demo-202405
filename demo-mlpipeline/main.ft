@@ -1,0 +1,89 @@
+import (
+    . "std/faas"
+)
+
+@function stage0 {
+    runtime = "python"
+    codeDir = "./code/PCA/"
+    resources = {
+        cpu = 8
+    }
+}
+
+@function stage1 {
+    runtime = "python"
+    codeDir = "./code/LGB-Code"
+    resources = {
+        cpu = 8
+    }
+}
+
+@function stage2 {
+    runtime = "python"
+    codeDir = "./code/LGB-Code"
+    resources = {
+        cpu = 1
+    }
+}
+
+@function stage3 {
+    runtime = "python"
+    codeDir = "./code/LGB-Code"
+    resources = {
+        cpu = 1
+    }
+}
+
+@workflow MLPipeLineWorkflow {
+    functions = [stage0, stage1, stage2, stage3]
+
+    // workflow spec runtime
+    runtime = "python"
+    codeDir = "./code"
+}
+
+@application MLPipeLine {
+    workflow = MLPipeLineWorkflow
+    defaultProvider = PKU
+    providers= [PKU]
+
+    // used by `ft run`
+    inputExamples = [
+        {
+            stage0 = {
+                input = 'Digits_Train.txt'
+                output = {
+                    vectors_pca = 'vectors_pca'
+                    train_pca_transform = 'train_pca_transform'
+                }
+            }
+            stage1 = {
+                input = {
+                    train_pca_transform = 'train_pca_transform'
+                }
+                output = {
+                    model = 'model_tree_0_0'
+                }
+            }
+            stage2 = {
+                input = {
+                    train_pca_transform = 'train_pca_transform'
+                    model = 'model_tree_0_0'
+                }
+                output = {
+                    predict = 'predict_0'
+                }
+            }
+            stage3 = {
+                input = {
+                    predict = 'predict_0'
+                    train_pca_transform = 'train_pca_transform'
+                }
+            }
+        }
+    ]
+}
+
+@provider PKU {
+    kind = "pku"
+}
