@@ -1,4 +1,5 @@
-*.yaml
-faasit_runtime
+.spilot.yaml
 packages
+Redis
 serverless-framework
+mlpipeline*.yaml
