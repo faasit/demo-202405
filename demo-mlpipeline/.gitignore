@@ -1,0 +1,4 @@
+*.yaml
+faasit_runtime
+packages
+serverless-framework

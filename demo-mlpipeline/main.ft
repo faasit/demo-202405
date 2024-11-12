@@ -4,37 +4,41 @@ import (
 
 @function stage0 {
     runtime = "python"
-    codeDir = "./code/PCA/"
-    resources = {
-        cpu = 8
+    codeDir = "./code/PCA"
+    resource = {
+        cpu = "8"
+        memory = "256M"
     }
 }
 
 @function stage1 {
     runtime = "python"
-    codeDir = "./code/LGB-Code"
-    resources = {
-        cpu = 8
+    codeDir = "./code/LGB-Code/train"
+    resource = {
+        cpu = "8"
+        memory = "256M"
     }
 }
 
 @function stage2 {
     runtime = "python"
-    codeDir = "./code/LGB-Code"
-    resources = {
-        cpu = 1
+    codeDir = "./code/LGB-Code/aggregate"
+    resource = {
+        cpu = "1"
+        memory = "256M"
     }
 }
 
 @function stage3 {
     runtime = "python"
-    codeDir = "./code/LGB-Code"
-    resources = {
-        cpu = 1
+    codeDir = "./code/LGB-Code/test"
+    resource = {
+        cpu = "1"
+        memory = "256M"
     }
 }
 
-@workflow MLPipeLineWorkflow {
+@workflow mlpipelineworkflow {
     functions = [stage0, stage1, stage2, stage3]
 
     // workflow spec runtime
@@ -42,8 +46,8 @@ import (
     codeDir = "./code"
 }
 
-@application MLPipeLine {
-    workflow = MLPipeLineWorkflow
+@application mlpipeline {
+    workflow = mlpipelineworkflow
     defaultProvider = PKU
     providers= [PKU]
 
