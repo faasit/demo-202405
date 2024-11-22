@@ -3,3 +3,4 @@ packages
 Redis
 serverless-framework
 mlpipeline*.yaml
+*.dockerfile
