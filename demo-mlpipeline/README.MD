@@ -55,4 +55,4 @@ ft invoke
 
 - [ ] 写一个脚本自动打包所有的库到`packages`文件夹中，该文件夹装入应用所有需要的运行时库
 - [ ] 将`serverless-framework`集成到运行时中
-- [ ] `upload.py`作为常量藏在部署文件里头
+- [x] `upload.py`作为常量藏在部署文件里头
