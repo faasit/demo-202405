@@ -1,0 +1,28 @@
+import (
+    . "std/faas"
+)
+
+@function stage0 {
+    runtime = "python"
+    codeDir = "./code/func"
+    resource = {
+        cpu = "8"
+        memory = "256M"
+    }
+}
+
+@workflow chammeleonworkflow {
+    functions = [stage0]
+    runtime = "python"
+    codeDir = "./code"
+}
+
+@application chammeleon {
+    workflow = chammeleonworkflow
+    defaultProvider = PKU
+    providers= [PKU]
+}
+
+@provider PKU {
+    kind = "pku"
+}
