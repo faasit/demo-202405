@@ -1,0 +1,44 @@
+import (
+  . "std/faas"
+)
+
+@function executor {
+  runtime = "python"
+  codeDir = "./code"
+}
+
+@workflow ParallelSVDFlow {
+  functions = [executor]
+
+  // workflow spec runtime
+  runtime = "python"
+  codeDir = "./code"
+}
+
+@application ParallelSVD {
+  workflow = ParallelSVDFlow
+  providers = [local,knative, aliyun]
+  defaultProvider = knative
+
+  // used by `ft run`
+  inputExamples = [
+    {
+      value = {
+        X = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12]]
+        numSplits = 2
+      }
+    }
+  ]
+}
+
+@provider aliyun {
+  kind = "aliyun"
+}
+
+@provider knative {
+  kind = "knative"
+}
+
+@provider local {
+  kind = "local"
+}
