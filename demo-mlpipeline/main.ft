@@ -50,6 +50,9 @@ import (
     workflow = mlpipelineworkflow
     defaultProvider = PKU
     providers= [PKU]
+    opts = {
+        redis_preload_folder = "./Redis/preload"
+    }
 
     // used by `ft run`
     inputExamples = [
