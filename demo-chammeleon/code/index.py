@@ -1,7 +1,5 @@
 from faasit_runtime import create_handler, workflow, Workflow
 
-from chameleon import PageTemplate
-
 def get_timestamp():
     from datetime import datetime
     return str(datetime.now())
