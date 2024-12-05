@@ -2,33 +2,25 @@ import (
   . "std/faas"
 )
 
-@function executor {
+@function stage0 {
   runtime = "python"
-  codeDir = "./code"
+  codeDir = "./code/stage0"
+  resource = {
+    cpu = "1"
+    memory = "256M"
+  }
 }
 
 @workflow ParallelSVDFlow {
-  functions = [executor]
-
-  // workflow spec runtime
+  functions = [stage0]
   runtime = "python"
   codeDir = "./code"
 }
 
-@application ParallelSVD {
+@application parallelsvd {
   workflow = ParallelSVDFlow
-  providers = [local,knative, aliyun]
-  defaultProvider = knative
-
-  // used by `ft run`
-  inputExamples = [
-    {
-      value = {
-        X = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12]]
-        numSplits = 2
-      }
-    }
-  ]
+  providers = [local,knative, aliyun, pku]
+  defaultProvider = pku
 }
 
 @provider aliyun {
@@ -41,4 +33,8 @@ import (
 
 @provider local {
   kind = "local"
+}
+
+@provider pku {
+  kind = "pku"
 }
