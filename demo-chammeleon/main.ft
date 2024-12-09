@@ -25,4 +25,9 @@ import (
 
 @provider PKU {
     kind = "pku"
+    opts = {
+        repeat = '1'
+        launch = 'tradition'
+        transmode = "allTCP"
+    }
 }
