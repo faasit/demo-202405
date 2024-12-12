@@ -23,10 +23,10 @@ import (
   codeDir = "./javascript"
 }
 
-@application WordCount {
+@application wordcount {
   workflow = WordCountFlow
-  providers = [knative, aliyun]
-  defaultProvider = knative
+  providers = [pku]
+  defaultProvider = pku
 
   // used by `ft run`
   inputExamples = [
@@ -45,4 +45,8 @@ import (
 
 @provider knative {
   kind = "knative"
+}
+
+@provider pku {
+  kind = 'pku'
 }
