@@ -51,7 +51,7 @@ import (
     defaultProvider = PKU
     providers= [PKU]
     opts = {
-        redis_preload_folder = "./Redis/preload"
+        redis_preload_folder = "./Redis/preload/mlpipe"
     }
 
     // used by `ft run`

@@ -6,7 +6,7 @@ def get_timestamp():
 
 @workflow
 def chammeleon_workflow(wf:Workflow):
-    r = wf.call("stage0",{'params':{}})
+    r = wf.call("stage0",{})
     return r
 
 handler = create_handler(chammeleon_workflow)
