@@ -20,14 +20,27 @@ import (
 @application chammeleon {
     workflow = chammeleonworkflow
     defaultProvider = PKU
-    providers= [PKU]
+    providers= [PKU,fast_start]
 }
 
 @provider PKU {
     kind = "pku"
-    opts = {
+    invoke = {
         repeat = '1'
         launch = 'tradition'
         transmode = "allTCP"
+    }
+}
+
+@provider fast_start {
+    kind = "pku"
+    deployment = {
+        startMode = 'fast-start'
+    }
+    invoke = {
+        repeat = '1'
+        launch = 'tradition'
+        transmode = "allTCP"
+        startMode = 'fast-start'
     }
 }

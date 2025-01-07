@@ -49,10 +49,7 @@ import (
 @application mlpipeline {
     workflow = mlpipelineworkflow
     defaultProvider = PKU
-    providers= [PKU]
-    opts = {
-        redis_preload_folder = "./Redis/preload/mlpipe"
-    }
+    providers= [PKU,runvk]
 
     // used by `ft run`
     inputExamples = [
@@ -93,4 +90,16 @@ import (
 
 @provider PKU {
     kind = "pku"
+    invoke = {
+        redis_preload_folder = "./Redis/preload/mlpipe"
+    }
+}
+@provider runvk {
+    kind = "pku"
+    deployment = {
+        runtimeClass = 'runvk'
+    }
+    invoke = {
+        redis_preload_folder = "./Redis/preload/mlpipe"
+    }
 }
