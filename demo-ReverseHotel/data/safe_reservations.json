@@ -1,0 +1,22 @@
+[
+  {
+    "user_id": 413,
+    "hotel_name": "Mountain View Lodge",
+    "quantity": 1
+  },
+  {
+    "user_id": 413,
+    "hotel_name": "Ocean Breeze Hotel",
+    "quantity": 1
+  },
+  {
+    "user_id": 413,
+    "hotel_name": "Desert Rose Hotel",
+    "quantity": 1
+  },
+  {
+    "user_id": 413,
+    "hotel_name": "Golden Sands Resort",
+    "quantity": 1
+  }
+]
