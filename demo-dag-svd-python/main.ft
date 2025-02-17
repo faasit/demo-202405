@@ -1,0 +1,40 @@
+import (
+  . "std/faas"
+)
+
+@function stage0 {
+  runtime = "python"
+  codeDir = "./code/stage0"
+  resource = {
+    cpu = "1"
+    memory = "256M"
+  }
+}
+
+@workflow ParallelSVDFlow {
+  functions = [stage0]
+  runtime = "python"
+  codeDir = "./code"
+}
+
+@application parallelsvd {
+  workflow = ParallelSVDFlow
+  providers = [local,knative, aliyun, pku]
+  defaultProvider = pku
+}
+
+@provider aliyun {
+  kind = "aliyun"
+}
+
+@provider knative {
+  kind = "knative"
+}
+
+@provider local {
+  kind = "local"
+}
+
+@provider pku {
+  kind = "pku"
+}

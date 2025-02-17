@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "name": "Sunshine Resort",
+        "rooms": 97
+    },
+    {
+        "id": 2,
+        "name": "Moonlight Inn",
+        "rooms": 98
+    },
+    {
+        "id": 3,
+        "name": "Starry Hotel",
+        "rooms": 104
+    },
+    {
+        "id": 4,
+        "name": "Ocean Breeze Hotel",
+        "rooms": 106
+    },
+    {
+        "id": 5,
+        "name": "Mountain View Lodge",
+        "rooms": 107
+    },
+    {
+        "id": 6,
+        "name": "GreenField Inn",
+        "rooms": 105
+    },
+    {
+        "id": 7,
+        "name": "CityCenter Suites",
+        "rooms": 37
+    },
+    {
+        "id": 8,
+        "name": "Desert Rose Hotel",
+        "rooms": 94
+    },
+    {
+        "id": 9,
+        "name": "LakeSide Retreat",
+        "rooms": 15
+    },
+    {
+        "id": 10,
+        "name": "Golden Sands Resort",
+        "rooms": 193
+    }
+]

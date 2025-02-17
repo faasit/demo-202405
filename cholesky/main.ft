@@ -1,0 +1,61 @@
+import (
+    . "std/faas"
+)
+
+@function split {
+    runtime = "python"
+    codeDir = "./code/split"
+    resource = {
+        cpu = "8"
+        memory = "256M"
+    }
+}
+
+@function compute {
+    runtime = "python"
+    codeDir = "./code/compute"
+    resource = {
+        cpu = "8"
+        memory = "256M"
+    }
+}
+
+@function merge {
+    runtime = "python"
+    codeDir = "./code/merge"
+    resource = {
+        cpu = "1"
+        memory = "256M"
+    }
+}
+
+
+@workflow choleskyworkflow {
+    functions = [split, compute, merge]
+
+    // workflow spec runtime
+    runtime = "python"
+    codeDir = "./code"
+}
+
+@application cholesky {
+    workflow = choleskyworkflow
+    defaultProvider = PKU
+    providers= [PKU,runvk]
+
+    // used by `ft run`
+    
+}
+
+@provider PKU {
+    kind = "pku"
+}
+@provider runvk {
+    kind = "pku"
+    deployment = {
+        runtimeClass = 'runvk'
+    }
+    invoke = {
+        redis_preload_folder = "./Redis/preload/mlpipe"
+    }
+}

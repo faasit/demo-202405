@@ -1,0 +1,46 @@
+import (
+    . "std/faas"
+)
+
+@function stage0 {
+    runtime = "python"
+    codeDir = "./code/func"
+    resource = {
+        cpu = "8"
+        memory = "256M"
+    }
+}
+
+@workflow chammeleonworkflow {
+    functions = [stage0]
+    runtime = "python"
+    codeDir = "./code"
+}
+
+@application chammeleon {
+    workflow = chammeleonworkflow
+    defaultProvider = PKU
+    providers= [PKU,fast_start]
+}
+
+@provider PKU {
+    kind = "pku"
+    invoke = {
+        repeat = '1'
+        launch = 'tradition'
+        transmode = "allTCP"
+    }
+}
+
+@provider fast_start {
+    kind = "pku"
+    deployment = {
+        startMode = 'fast-start'
+    }
+    invoke = {
+        repeat = '1'
+        launch = 'tradition'
+        transmode = "allTCP"
+        startMode = 'fast-start'
+    }
+}

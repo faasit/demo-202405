@@ -12,3 +12,10 @@ kn_func.yaml
 local_storage
 !demo-chatbot/code/local_storage/
 tmp
+
+venv
+.spilot.yaml
+Redis
+serverless-framework
+*.yaml
+*.dockerfile

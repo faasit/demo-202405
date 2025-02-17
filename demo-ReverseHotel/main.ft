@@ -1,0 +1,42 @@
+import (
+    . "std/faas"
+)
+
+@function reversehotel {
+    runtime = "python"
+    codeDir = "./code/safereverse"
+    resource = {
+        cpu = "8"
+        memory = "256M"
+    }
+}
+
+@function init {
+    runtime = "python"
+    codeDir = "./code/init"
+    resource = {
+        cpu = "1"
+        memory = "256M"
+    }
+}
+
+
+@application safereverse {
+    functions = [reversehotel, init]
+    defaultProvider = PKU
+    providers= [PKU]
+
+    inputExamples = [
+        {
+            lambdaId = "reversehotel"
+            instanceId = '413'
+        }
+    ]
+}
+
+@provider PKU {
+    kind = "pku"
+    invoke = {
+        redis_preload_folder = "./data"
+    }
+}
