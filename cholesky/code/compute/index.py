@@ -42,7 +42,10 @@ def compute(blocks):
             L_blocks[j][i] = np.linalg.solve(L_blocks[i][i].T, blocks[j][i].T).T
             return j, L_blocks[j][i]
 
-        results = Parallel(n_jobs=-1)(delayed(process_block)(j) for j in range(i+1, n))
+        results = []
+        for j in range(i+1, n):
+            results.append(process_block(j))
+        # results = Parallel(n_jobs=-1)(delayed(process_block)(j) for j in range(i+1, n))
         for j, result in results:
             L_blocks[j][i] = result
 

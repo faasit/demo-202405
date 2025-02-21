@@ -28,8 +28,17 @@ import (
 
     inputExamples = [
         {
-            lambdaId = "reversehotel"
-            instanceId = '413'
+            value = {
+                lambdaId = "reversehotel"
+                instanceId = '413'
+            }
+        },
+        {
+            value = {
+                lambdaId = "reversehotel"
+                instanceId = '413'
+                selected_hotel = ['1']
+            }
         }
     ]
 }

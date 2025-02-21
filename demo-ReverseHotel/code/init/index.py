@@ -3,11 +3,9 @@ from faasit_runtime import durable
 from faasit_runtime.durable import DurableRuntime
 
 import json
-from table_manage import main
 @durable
 def init(df: DurableRuntime):
     # 打开并读取 hotels.json 文件
-    main()
     store = df.storage
     hotel = store.get('hotels.json')
     hotels_data = json.loads(hotel)
