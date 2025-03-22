@@ -1,0 +1,55 @@
+@function download {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "index.download"
+}
+
+@function preprocess {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "index.preprocess"
+}
+
+@function train {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "index.train"
+}
+
+@function test {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "index.test"
+}
+
+
+@workflow mlpipeworkflow {
+    functions = [download, preprocess, train, test]
+
+    // workflow spec runtime
+    runtime = "python"
+    codeDir = "./code"
+    handler = "index.mlpipe"
+}
+
+@application mlpipe {
+    workflow = mlpipeworkflow
+    defaultProvider = PKU
+    providers= [PKU,runvk]
+
+    // used by `ft run`
+    
+}
+
+@provider PKU {
+    kind = "pku"
+}
+@provider runvk {
+    kind = "pku"
+    deployment = {
+        runtimeClass = 'runvk'
+    }
+    invoke = {
+        redis_preload_folder = "./Redis/preload/mlpipe"
+    }
+}
