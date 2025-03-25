@@ -39,4 +39,4 @@ def handle_func(frt:FaasitRuntime):
     return frt.output(rendered)
 
 
-handler = create_handler(handle_func)
+handler = handle_func.export()

@@ -1,22 +1,22 @@
-@function download {
+@function download_0 {
     runtime = "python"
     codeDir = "./code"
     handler = "index.download"
 }
 
-@function preprocess {
+@function preprocess_1 {
     runtime = "python"
     codeDir = "./code"
     handler = "index.preprocess"
 }
 
-@function train {
+@function train_2 {
     runtime = "python"
     codeDir = "./code"
     handler = "index.train"
 }
 
-@function test {
+@function test_3 {
     runtime = "python"
     codeDir = "./code"
     handler = "index.test"
@@ -24,7 +24,7 @@
 
 
 @workflow mlpipeworkflow {
-    functions = [download, preprocess, train, test]
+    functions = [download_0, preprocess_1, train_2, test_3]
 
     // workflow spec runtime
     runtime = "python"

@@ -5,19 +5,11 @@ import (
 @function reversehotel {
     runtime = "python"
     codeDir = "./code/safereverse"
-    resource = {
-        cpu = "8"
-        memory = "256M"
-    }
 }
 
 @function init {
     runtime = "python"
     codeDir = "./code/init"
-    resource = {
-        cpu = "1"
-        memory = "256M"
-    }
 }
 
 
