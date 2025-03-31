@@ -1,6 +1,6 @@
 from faasit_runtime import function,create_handler
 from faasit_runtime import durable
-from faasit_runtime.durable import DurableRuntime
+from faasit_runtime.durable.runtime import DurableRuntime
 
 import json
 @durable
