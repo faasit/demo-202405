@@ -42,6 +42,20 @@ def preprocess_data(data):
     split = int(DATA_SPLIT * len(X))
     return {'X': X[:split], 'y': y[:split]}, {'X': X[split:], 'y': y[split:]}
 
+def chunked_data_generator(payload, times, chunk_size=8192):
+    """
+    Generator function for streaming. It repeats the same payload 'times' times,
+    and splits each repetition into chunks of size 'chunk_size'.
+    """
+    # payload: bytes
+    # times: int
+    # chunk_size: int
+    for _ in range(times):
+        start = 0
+        while start < len(payload):
+            yield payload[start:start + chunk_size]
+            start += chunk_size
+
 
 @function
 def download_handler(frt: FaasitRuntime):
@@ -60,8 +74,16 @@ def preprocess_handler(frt: FaasitRuntime):
     store = frt.storage
     data = store.get('data', active_pull=False, src_stage='download-0')
     (train_data, test_data) = preprocess_data(data)
-    frt.call("train-2", {"train_data": train_data})
-    frt.call("test-3", {"test_data": test_data})
+    threads = [
+        threading.Thread(target=frt.call, args=("train-2", {"train_data": train_data})),
+        threading.Thread(target=frt.call, args=("test-3", {"test_data": test_data}))
+    ]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+    # frt.call("train-2", {"train_data": train_data})
+    # frt.call("test-3", {"test_data": test_data})
     return frt.output({"status": "started"})
 
 @function
@@ -101,16 +123,3 @@ def mlpipe(wf: Workflow):
     return s3
 
 mlpipe = mlpipe.export()
-# if __name__ == "__main__":
-#     role = os.environ['ROLE']
-
-#     if role == 'download':
-#         download_handler()
-#     elif role == 'preprocess':
-#         preprocess_handler()
-#     elif role == 'train':
-#         train_handler()
-#     elif role == 'test':
-#         test_handler()
-#     else:
-#         sys.exit("Invalid role specified")
