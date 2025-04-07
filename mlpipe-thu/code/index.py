@@ -90,11 +90,14 @@ def preprocess_handler(frt: FaasitRuntime):
 def train_handler(frt: FaasitRuntime):
     store = frt.storage
     data = store.get('train_data',active_pull=False, src_stage='proprocess-1')
+    logging.info("Training data received")
     X = data['X']
     y = data['y']
-    model = LogisticRegression(max_iter=1000)
+    model = LogisticRegression(max_iter=10)
+    logging.info("Training model...")
     model.fit(X, y)
     serialized_model = pickle.dumps(model)
+    logging.info("Model trained")
     frt.call("test-3", {"model": serialized_model})
     return frt.output({"status": "started"})
 

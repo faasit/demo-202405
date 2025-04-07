@@ -14,6 +14,9 @@
     runtime = "python"
     codeDir = "./code"
     handler = "index.train"
+    resource = {
+        cpu = 4
+    }
 }
 
 @function test_3 {
@@ -35,7 +38,7 @@
 @application mlpipe {
     workflow = mlpipeworkflow
     defaultProvider = PKU
-    providers= [PKU,runvk]
+    providers= [PKU,runvk,thu]
 
     // used by `ft run`
     
@@ -43,6 +46,12 @@
 
 @provider PKU {
     kind = "pku"
+}
+@provider thu {
+    kind = "pku"
+    invoke = {
+        containter_optimized = "true"
+    }
 }
 @provider runvk {
     kind = "pku"
