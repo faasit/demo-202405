@@ -2,12 +2,18 @@
     runtime = "python"
     codeDir = "./code"
     handler = "index.download"
+    resource = {
+        cpu = 2
+    }
 }
 
 @function preprocess_1 {
     runtime = "python"
     codeDir = "./code"
     handler = "index.preprocess"
+    resource = {
+        cpu = 2
+    }
 }
 
 @function train_2 {
@@ -23,6 +29,9 @@
     runtime = "python"
     codeDir = "./code"
     handler = "index.test"
+    resource = {
+        cpu = 2
+    }
 }
 
 
@@ -51,6 +60,7 @@
     kind = "pku"
     invoke = {
         containter_optimized = "true"
+        redis_preload_folder = "./data"
     }
 }
 @provider runvk {
