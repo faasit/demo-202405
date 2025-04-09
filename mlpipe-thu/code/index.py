@@ -1,4 +1,5 @@
 import os
+import io
 import socket
 import pickle
 import numpy as np
@@ -19,16 +20,21 @@ DATA_SPLIT = 0.6  # 训练测试分割比例
 # ===========================
 # Data download and preprocess functions
 # ===========================
-def download_data():
+def download_data(frt: FaasitRuntime):
     logger.info("Fetching data...")
-    if os.path.exists('mnist_X.npy') and os.path.exists('mnist_y.npy'):
-        logger.info('Hitting cache. Loading data from local file...')
-        X = np.load('mnist_X.npy')
-        y = np.load('mnist_y.npy')
-    else:
-        mnist = fetch_openml('mnist_784', version=1, as_frame=False, parser="pandas")
-        X, y = mnist.data, mnist.target.astype(np.int32)
-        logger.info("Data prepared from openml")
+    store = frt.storage
+    mnist_X = store.get('mnist_X.npy')
+    mnist_y = store.get('mnist_y.npy')
+    X = np.load(io.BytesIO(mnist_X))
+    y = np.load(io.BytesIO(mnist_y))
+    # if os.path.exists('mnist_X.npy') and os.path.exists('mnist_y.npy'):
+    #     logger.info('Hitting cache. Loading data from local file...')
+    #     X = np.load('mnist_X.npy')
+    #     y = np.load('mnist_y.npy')
+    # else:
+    #     mnist = fetch_openml('mnist_784', version=1, as_frame=False, parser="pandas")
+    #     X, y = mnist.data, mnist.target.astype(np.int32)
+    #     logger.info("Data prepared from openml")
     X = X.reshape(-1, 28, 28)
     return {'X': X, 'y': y}
 
@@ -59,7 +65,7 @@ def chunked_data_generator(payload, times, chunk_size=8192):
 
 @function
 def download_handler(frt: FaasitRuntime):
-    raw_data = download_data()
+    raw_data = download_data(frt)
     replicated_data = [raw_data for _ in range(REPLICATION)]
     result = frt.call('preprocess-1', {
         'path': 'receive',
@@ -72,7 +78,7 @@ def download_handler(frt: FaasitRuntime):
 @function
 def preprocess_handler(frt: FaasitRuntime):
     store = frt.storage
-    data = store.get('data', active_pull=False, src_stage='download-0')
+    data = store.get('data', active_pull=False, src_stage='download-0', local_cache=True,tcp_direct=False)
     (train_data, test_data) = preprocess_data(data)
     threads = [
         threading.Thread(target=frt.call, args=("train-2", {"train_data": train_data})),
@@ -89,7 +95,7 @@ def preprocess_handler(frt: FaasitRuntime):
 @function
 def train_handler(frt: FaasitRuntime):
     store = frt.storage
-    data = store.get('train_data',active_pull=False, src_stage='proprocess-1')
+    data = store.get('train_data',active_pull=False, src_stage='proprocess-1',local_cache=True,tcp_direct=False)
     logging.info("Training data received")
     X = data['X']
     y = data['y']
@@ -106,8 +112,8 @@ def test_handler(frt: FaasitRuntime):
     store = frt.storage
     results = {}
 
-    results['model'] = store.get('model',active_pull=False, src_stage='train-2')
-    results['test'] = store.get('test_data',active_pull=False, src_stage='preprocess-1')
+    results['model'] = store.get('model',active_pull=False, src_stage='train-2',local_cache=True,tcp_direct=False)
+    results['test'] = store.get('test_data',active_pull=False, src_stage='preprocess-1',local_cache=True,tcp_direct=False)
     model = pickle.loads(results['model'])
     accuracy = model.score(results['test']['X'], results['test']['y'])
     return frt.output({"accuracy": accuracy})
