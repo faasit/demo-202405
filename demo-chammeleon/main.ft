@@ -2,23 +2,15 @@ import (
     . "std/faas"
 )
 
-@function stage0 {
-    runtime = "python"
-    codeDir = "./code/func"
-    resource = {
-        cpu = "8"
-        memory = "256M"
-    }
-}
-
-@workflow chammeleonworkflow {
-    functions = [stage0]
+@function chammeleon {
     runtime = "python"
     codeDir = "./code"
+    handler = "index.handler"
 }
 
+
 @application chammeleon {
-    workflow = chammeleonworkflow
+    functions = [chammeleon]
     defaultProvider = PKU
     providers= [PKU,fast_start]
 }
@@ -34,13 +26,12 @@ import (
 
 @provider fast_start {
     kind = "pku"
-    deployment = {
+    deploy = {
         startMode = 'fast-start'
+        payload = "input.txt"
     }
     invoke = {
-        repeat = '1'
-        launch = 'tradition'
-        transmode = "allTCP"
-        startMode = 'fast-start'
+        restore_mode = "parallel"
+        restore_num = "3"
     }
 }

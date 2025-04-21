@@ -1,0 +1,5 @@
+--extra-index-url http://192.168.28.220:12121
+--trusted-host 192.168.28.220
+
+chameleon
+faasit_runtime==1.0.0
