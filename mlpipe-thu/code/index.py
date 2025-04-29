@@ -38,6 +38,18 @@ def download_data(frt: FaasitRuntime):
     X = X.reshape(-1, 28, 28)
     return {'X': X, 'y': y}
 
+def log_send_operation(sender, receivers):
+    FILE = "trans_metrics.pkl"
+    # 先收集所有条目
+    entry = { "sender": sender, "receiver": receivers}
+
+    try:
+        # 使用二进制写入模式，全量覆盖保存
+        with open(FILE, "wb") as f:
+            pickle.dump(entry, f)
+    except Exception as e:
+        print(f"Log error: {str(e)}")
+
 
 def preprocess_data(data):
     """
@@ -67,6 +79,7 @@ def chunked_data_generator(payload, times, chunk_size=8192):
 def download_handler(frt: FaasitRuntime):
     raw_data = download_data(frt)
     replicated_data = [raw_data for _ in range(REPLICATION)]
+    log_send_operation("download-0", ['preprocess-1'])
     result = frt.call('preprocess-1', {
         'path': 'receive',
         'data': raw_data,
@@ -80,6 +93,7 @@ def preprocess_handler(frt: FaasitRuntime):
     store = frt.storage
     data = store.get('data', active_pull=False, src_stage='download-0', local_cache=True,tcp_direct=False)
     (train_data, test_data) = preprocess_data(data)
+    log_send_operation("preprocess-1", ['train-2', 'test-3'])
     threads = [
         threading.Thread(target=frt.call, args=("train-2", {"train_data": train_data})),
         threading.Thread(target=frt.call, args=("test-3", {"test_data": test_data}))
@@ -104,6 +118,7 @@ def train_handler(frt: FaasitRuntime):
     model.fit(X, y)
     serialized_model = pickle.dumps(model)
     logging.info("Model trained")
+    log_send_operation("train-2", ['test-3'])
     frt.call("test-3", {"model": serialized_model})
     return frt.output({"status": "started"})
 

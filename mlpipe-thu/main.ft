@@ -3,7 +3,7 @@
     codeDir = "./code"
     handler = "index.download"
     resource = {
-        cpu = 2
+        cpu = 1
     }
 }
 
@@ -12,7 +12,7 @@
     codeDir = "./code"
     handler = "index.preprocess"
     resource = {
-        cpu = 2
+        cpu = 1
     }
 }
 
@@ -21,7 +21,7 @@
     codeDir = "./code"
     handler = "index.train"
     resource = {
-        cpu = 4
+        cpu = 1
     }
 }
 
@@ -30,7 +30,7 @@
     codeDir = "./code"
     handler = "index.test"
     resource = {
-        cpu = 2
+        cpu = 1
     }
 }
 
