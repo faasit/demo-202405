@@ -12,7 +12,7 @@ target_size = 10 * 1024 * 1024  # 100MB
 # 初始化一个空字符串用于存储生成的单词
 current_size = 0
 
-with open('data/random_words.txt', 'w', encoding='utf-8') as file:
+with open('random_words.txt', 'w', encoding='utf-8') as file:
     while current_size < target_size:
         word = generate_random_word()
         # 如果不是第一个单词，添加一个空格

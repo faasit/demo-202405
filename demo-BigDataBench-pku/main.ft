@@ -4,22 +4,16 @@ import (
 
 @function stage0{
     runtime = "python"
-    codeDir = "./code/mapper_handler"
+    codeDir = "./code"
     replicas = 4
-    resource = {
-        cpu = "1"
-        memory = "256M"
-    }
+    handler = "index.mapper"
 }
 
 @function stage1 {
     runtime = "python"
-    codeDir = "./code/reducer_handler"
+    codeDir = "./code"
     replicas = 4
-    resource = {
-        cpu = "1"
-        memory = "256M"
-    }
+    handler = "index.reducer"
 }
 
 
@@ -27,17 +21,18 @@ import (
     functions = [stage0,stage1]
     runtime = "python"
     codeDir = "./code"
+    handler = "index.wordcountflow"
 }
 
 @application wordcount {
     workflow = WordCountFlow
     defaultProvider = PKU
     providers= [PKU]
-    opts = {
-        redis_preload_folder = "./Redis/preload"
-    }
 }
 
 @provider PKU {
     kind = "pku"
+    invoke = {
+        redis_preload_folder = "./data"
+    }
 }
