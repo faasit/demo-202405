@@ -4,29 +4,20 @@ import (
 
 @function split {
     runtime = "python"
-    codeDir = "./code/split"
-    resource = {
-        cpu = "1"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.workflow_split"
 }
 
 @function compute {
     runtime = "python"
-    codeDir = "./code/compute"
-    resource = {
-        cpu = "0.5"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.workflow_compute"
 }
 
 @function merge {
     runtime = "python"
-    codeDir = "./code/merge"
-    resource = {
-        cpu = "0.2"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.workflow_merge"
 }
 
 
@@ -36,6 +27,7 @@ import (
     // workflow spec runtime
     runtime = "python"
     codeDir = "./code"
+    handler = "index.cholesky"
 }
 
 @application cholesky {
