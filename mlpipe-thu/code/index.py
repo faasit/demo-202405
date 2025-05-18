@@ -79,7 +79,6 @@ def chunked_data_generator(payload, times, chunk_size=8192):
 def download_handler(frt: FaasitRuntime):
     raw_data = download_data(frt)
     replicated_data = [raw_data for _ in range(REPLICATION)]
-    log_send_operation("download-0", ['preprocess-1'])
     result = frt.call('preprocess-1', {
         'path': 'receive',
         'data': raw_data,
@@ -93,7 +92,6 @@ def preprocess_handler(frt: FaasitRuntime):
     store = frt.storage
     data = store.get('data', active_pull=False, src_stage='download-0', local_cache=True,tcp_direct=False)
     (train_data, test_data) = preprocess_data(data)
-    log_send_operation("preprocess-1", ['train-2', 'test-3'])
     threads = [
         threading.Thread(target=frt.call, args=("train-2", {"train_data": train_data})),
         threading.Thread(target=frt.call, args=("test-3", {"test_data": test_data}))
@@ -118,7 +116,6 @@ def train_handler(frt: FaasitRuntime):
     model.fit(X, y)
     serialized_model = pickle.dumps(model)
     logging.info("Model trained")
-    log_send_operation("train-2", ['test-3'])
     frt.call("test-3", {"model": serialized_model})
     return frt.output({"status": "started"})
 
@@ -147,3 +144,12 @@ def mlpipe(wf: Workflow):
     return s3
 
 mlpipe = mlpipe.export()
+
+function_name = os.environ.get("FUNCTION_NAME")
+logger.info(f"Function name: {function_name}")
+if function_name == 'download':
+    log_send_operation("mlpipe-download-0", ['mlpipe-preprocess-1'])
+elif function_name == 'preprocess':
+    log_send_operation("mlpipe-preprocess-1", ['mlpipe-train-2', 'mlpipe-test-3'])
+elif function_name == 'train':
+    log_send_operation("mlpipe-train-2", ['mlpipe-test-3'])
