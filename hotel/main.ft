@@ -1,0 +1,48 @@
+@function search {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "search.search_hotel"
+}
+
+@function geo {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "geo.nearby"
+}
+
+@function rate {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "rate.getRates"
+}
+
+@function hotel {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "hotel.baseReserveHotel"
+}
+
+@workflow travelreservationwf {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "workflow.travelReservation"
+    functions = [search, geo, rate, hotel]
+}
+
+@application travelreservation {
+    workflow = travelreservationwf
+    defaultProvider = PKU
+    providers = [PKU]
+
+    // used by `ft run`
+    // codeDir = "./code"
+    // handler = "index.travelreservation"
+}
+
+@provider PKU {
+    kind = "pku"
+    invoke = {
+        redis_preload_folder = "./data"
+    }
+}
+
