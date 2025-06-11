@@ -4,12 +4,14 @@ import (
 
 @function reversehotel {
     runtime = "python"
-    codeDir = "./code/safereverse"
+    codeDir = "./code"
+    handler = "index.init"
 }
 
 @function init {
     runtime = "python"
-    codeDir = "./code/init"
+    codeDir = "./code"
+    handler = "index.reservation"
 }
 
 
