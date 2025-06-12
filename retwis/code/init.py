@@ -2,6 +2,7 @@ from faasit_runtime import function, FaasitRuntime
 import json
 import time
 from utils import CreatePost, CreateUser
+import logging
 
 @function
 def InitUserAndPost(frt : FaasitRuntime):
@@ -40,6 +41,8 @@ def InitUserAndPost(frt : FaasitRuntime):
 		'compute_time': end_compute_time - start_compute_time,
 		'output_time': end_output_time - start_output_time,
 	}
+	
+	frt.log("InitUserAndPost", "val", return_val)
 	
 	return {
 		'statusCode': 200,
