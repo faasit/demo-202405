@@ -1,0 +1,65 @@
+@function stage0 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "init.initUserAndPost"
+}
+@function stage1 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "request.request"
+}
+
+@function stage2 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "userlogin.userLogin"
+}
+
+@function stage3 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "getprofile.profileFollowers"
+}
+
+@function stage4 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "post.post"
+}
+
+@function stage5 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "timeline.timeline"
+}
+
+@function stage6 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "collect.collectResult"
+}
+
+@workflow retwisworkflow {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "workflow.retwisworkflow"
+    functions = [
+        stage0,
+        stage1,
+        stage2,
+        stage3,
+        stage4,
+        stage5,
+        stage6
+    ]
+}
+
+@application retwis {
+    workflow = retwisworkflow
+    defaultProvider = PKU
+    providers= [PKU]
+
+}
+@provider PKU {
+    kind = "pku"
+}
