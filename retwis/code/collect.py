@@ -1,6 +1,11 @@
 from faasit_runtime import function, FaasitRuntime
 import json, time
 
+env = {
+	"LambdaId": "retwis",
+	"InstanceId": "t"+str(110)
+}
+
 @function
 def CollectResult(frt : FaasitRuntime):
 	start_time = time.time()
@@ -43,6 +48,7 @@ def CollectResult(frt : FaasitRuntime):
 		'post_message': post_message_cnt,
 		'timeline_message': timeline_message_cnt,
 	}
+	frt.log(env, "CollectResult", return_val)
 	
 	return {
 		'statusCode': 200,

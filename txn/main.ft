@@ -1,0 +1,23 @@
+@function reverse {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "index.handler"
+}
+
+@application main {
+    functions = [reverse]
+    providers = [pku]
+    defaultProvider = pku
+    inputExamples = [
+        {
+            value = {
+                lambdaId = "reversehotel"
+                instanceId = '413'
+            }
+        }
+    ]
+}
+
+@provider pku {
+    kind = "pku"
+}

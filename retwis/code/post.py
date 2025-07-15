@@ -2,6 +2,10 @@ from faasit_runtime import function, FaasitRuntime
 import info as Info
 import json, time
 
+env = {
+	"LambdaId": "retwis",
+	"InstanceId": "t"+str(110)
+}
 
 @function
 def Post(frt : FaasitRuntime):
@@ -82,6 +86,8 @@ def Post(frt : FaasitRuntime):
 		'failed_request': failed_msg,
 		'success_request': success_msg,
 	}
+
+	frt.log(env, "post", return_val)
 	
 	return {
 		'statusCode': 200,

@@ -2,6 +2,11 @@ from faasit_runtime import function, FaasitRuntime
 import info as Info
 import json, time
 
+env = {
+	"LambdaId": "retwis",
+	"InstanceId": "t"+str(110)
+}
+
 @function
 def Timeline(frt : FaasitRuntime):
 	start_time = time.time()
@@ -79,6 +84,7 @@ def Timeline(frt : FaasitRuntime):
 		'success_request': success_msg,
 		'update_cnt': update_cnt,
 	}
+	frt.log(env, "timeline", return_val)
 	
 	return {
 		'statusCode': 200,

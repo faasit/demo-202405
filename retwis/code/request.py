@@ -5,6 +5,11 @@ import time
 import info as Info
 from utils import random_string
 
+env = {
+	"LambdaId": "retwis",
+	"InstanceId": "t"+str(110)
+}
+
 @function
 def Request(frt: FaasitRuntime):
 	start_time = time.time()
@@ -81,6 +86,8 @@ def Request(frt: FaasitRuntime):
 		'post_message': post_message_cnt,
 		'timeline_message': timeline_message_cnt,
 	}
+
+	frt.log(env, "request", return_val)
 	
 	return {
 		'statusCode': 200,

@@ -4,6 +4,11 @@ import time
 from utils import CreatePost, CreateUser
 import logging
 
+env = {
+	"LambdaId": "retwis",
+	"InstanceId": "t"+str(110)
+}
+
 @function
 def InitUserAndPost(frt : FaasitRuntime):
 	start_time = time.time()
@@ -42,7 +47,7 @@ def InitUserAndPost(frt : FaasitRuntime):
 		'output_time': end_output_time - start_output_time,
 	}
 	
-	frt.log("InitUserAndPost", "val", return_val)
+	frt.log(env, "initUserAndPost", return_val)
 	
 	return {
 		'statusCode': 200,

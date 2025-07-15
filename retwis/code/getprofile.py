@@ -2,6 +2,11 @@ from faasit_runtime import function, FaasitRuntime
 import info as Info
 import json, time
 
+env = {
+	"LambdaId": "retwis",
+	"InstanceId": "t"+str(110)
+}
+
 @function
 def ProfileFollowers(frt : FaasitRuntime):
 	start_time = time.time()
@@ -56,6 +61,8 @@ def ProfileFollowers(frt : FaasitRuntime):
 		'failed_request': failed_msg,
 		'success_request': success_msg,
 	}
+
+	frt.log(env, "profileFollowers", return_val)
 	
 	return {
 		'statusCode': 200,
