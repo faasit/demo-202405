@@ -4,38 +4,26 @@ import (
 
 @function stage0 {
     runtime = "python"
-    codeDir = "./code/PCA"
-    resource = {
-        cpu = "8"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.pca"
 }
 
 @function stage1 {
     runtime = "python"
-    codeDir = "./code/LGB-Code/train"
-    resource = {
-        cpu = "8"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.train"
 }
 
 @function stage2 {
     runtime = "python"
-    codeDir = "./code/LGB-Code/aggregate"
-    resource = {
-        cpu = "1"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.aggregate"
 }
 
 @function stage3 {
     runtime = "python"
-    codeDir = "./code/LGB-Code/test"
-    resource = {
-        cpu = "1"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.test"
 }
 
 @workflow mlpipelineworkflow {
@@ -44,6 +32,7 @@ import (
     // workflow spec runtime
     runtime = "python"
     codeDir = "./code"
+    handler = "index.mlpipe"
 }
 
 @application mlpipeline {
