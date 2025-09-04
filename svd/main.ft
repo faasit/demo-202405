@@ -30,7 +30,7 @@ import (
 }
 
 
-@workflow gemmworkflow {
+@workflow svdworkflow {
     functions = [split, compute, merge]
 
     // workflow spec runtime
@@ -38,8 +38,8 @@ import (
     codeDir = "./code"
 }
 
-@application gemm {
-    workflow = gemmworkflow
+@application svd {
+    workflow = svdworkflow
     defaultProvider = PKU
     providers= [PKU,runvk]
 
