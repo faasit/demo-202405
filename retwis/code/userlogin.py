@@ -59,7 +59,7 @@ def UserLogin(frt : FaasitRuntime):
 		'success_request': success_msg,
 	}
 
-	frt.log(env, "userLogin", return_val)
+	# frt.log(env, "userLogin", return_val)
 	
 	return {
 		'statusCode': 200,

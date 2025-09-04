@@ -48,7 +48,7 @@ def CollectResult(frt : FaasitRuntime):
 		'post_message': post_message_cnt,
 		'timeline_message': timeline_message_cnt,
 	}
-	frt.log(env, "CollectResult", return_val)
+	# frt.log(env, "CollectResult", return_val)
 	
 	return {
 		'statusCode': 200,

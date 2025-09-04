@@ -47,7 +47,7 @@ def InitUserAndPost(frt : FaasitRuntime):
 		'output_time': end_output_time - start_output_time,
 	}
 	
-	frt.log(env, "initUserAndPost", return_val)
+	# frt.log(env, "initUserAndPost", return_val)
 	
 	return {
 		'statusCode': 200,

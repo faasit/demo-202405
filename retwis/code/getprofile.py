@@ -62,7 +62,7 @@ def ProfileFollowers(frt : FaasitRuntime):
 		'success_request': success_msg,
 	}
 
-	frt.log(env, "profileFollowers", return_val)
+	# frt.log(env, "profileFollowers", return_val)
 	
 	return {
 		'statusCode': 200,

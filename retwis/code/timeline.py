@@ -84,7 +84,7 @@ def Timeline(frt : FaasitRuntime):
 		'success_request': success_msg,
 		'update_cnt': update_cnt,
 	}
-	frt.log(env, "timeline", return_val)
+	# frt.log(env, "timeline", return_val)
 	
 	return {
 		'statusCode': 200,

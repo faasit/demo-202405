@@ -87,7 +87,7 @@ def Post(frt : FaasitRuntime):
 		'success_request': success_msg,
 	}
 
-	frt.log(env, "post", return_val)
+	# frt.log(env, "post", return_val)
 	
 	return {
 		'statusCode': 200,

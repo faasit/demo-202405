@@ -87,7 +87,7 @@ def Request(frt: FaasitRuntime):
 		'timeline_message': timeline_message_cnt,
 	}
 
-	frt.log(env, "request", return_val)
+	# frt.log(env, "request", return_val)
 	
 	return {
 		'statusCode': 200,
