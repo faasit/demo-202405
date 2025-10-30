@@ -1,0 +1,64 @@
+@function stage00 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "preprocess.handler"
+    baseImage = "faasit-spilot-cuda:0.1"
+}
+@function stage01 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "preprocess.handler"
+    baseImage = "faasit-spilot-cuda:0.1"
+}
+
+@function stage10 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "train.handler"
+    baseImage = "faasit-spilot-cuda:0.1"
+}
+
+@function stage20 {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "test.handler"
+    baseImage = "faasit-spilot-cuda:0.1"
+}
+
+
+@workflow mlworkflow {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "workflow.mlworkflow"
+    functions = [
+        stage00,
+        stage01,
+        stage10,
+        stage20,
+    ]
+}
+
+@application mlpipe {
+    workflow = mlworkflow
+    defaultProvider = PKU
+    providers= [PKU]
+
+}
+@provider PKU {
+    kind = "pku"
+    build = {
+        image = "cuda"
+    }
+    deploy = {
+        worker = "distributed_worker"
+    }
+    invoke = {
+        controller = "distributed_controller"
+        redis_yaml = "distributed-redis.yaml"
+        redis_secret_yaml = "distributed-redis-secret.yaml"
+        transmode = "auto"
+        ditto_placement = "true"
+        redis_num = "1"
+        multi_config_path = "workflow_gpu"
+    }
+}
