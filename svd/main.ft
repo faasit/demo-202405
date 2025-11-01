@@ -1,61 +1,59 @@
-import (
-    . "std/faas"
-)
-
 @function split {
     runtime = "python"
-    codeDir = "./code/split"
-    resource = {
-        cpu = "8"
-        memory = "256M"
-    }
-}
-
-@function compute {
-    runtime = "python"
-    codeDir = "./code/compute"
-    resource = {
-        cpu = "8"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.split"
 }
 
 @function merge {
     runtime = "python"
-    codeDir = "./code/merge"
-    resource = {
-        cpu = "1"
-        memory = "256M"
-    }
+    codeDir = "./code"
+    handler = "index.merge"
 }
 
-
-@workflow svdworkflow {
-    functions = [split, compute, merge]
-
-    // workflow spec runtime
+@function compute {
     runtime = "python"
     codeDir = "./code"
+    handler = "index.compute"
 }
 
-@application svd {
-    workflow = svdworkflow
-    defaultProvider = PKU
-    providers= [PKU,runvk]
-
-    // used by `ft run`
-    
+@function svd {
+    runtime = "python"
+    codeDir = "./code"
+    handler = "index.svd"
 }
 
-@provider PKU {
-    kind = "pku"
+@application svdapp {
+    functions = [svd,split, merge, compute]
+    defaultProvider = kn
+    providers = [kn,ali,k8s,sd]
+    inputExamples = [
+        {
+            value = {
+                file = 'data.npy'
+                numSplits = 2
+            }
+        }
+    ]
 }
-@provider runvk {
-    kind = "pku"
-    deployment = {
-        runtimeClass = 'runvk'
-    }
+
+@provider kn {
+    kind = 'knative'
+    registry = "192.168.28.220:5000"
+    redis_data = './data'
+}
+
+@provider ali {
+    kind = "aliyun"
     invoke = {
-        redis_preload_folder = "./Redis/preload/mlpipe"
+        timeout = "50000"
     }
+}
+
+@provider k8s {
+    kind = "k8s"
+    registry = "192.168.28.220:5000"
+}
+
+@provider sd {
+    kind = "pku"
 }
