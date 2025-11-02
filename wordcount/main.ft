@@ -17,7 +17,7 @@ import (
 }
 
 
-@workflow WordCountFlow {
+@workflow wordcountflow {
     functions = [stage0,stage1]
     runtime = "python"
     codeDir = "./code"
@@ -25,14 +25,19 @@ import (
 }
 
 @application wordcount {
-    workflow = WordCountFlow
-    defaultProvider = PKU
-    providers= [PKU]
+    workflow = wordcountflow
+    defaultProvider = sd
+    providers= [sd, k8s]
 }
 
-@provider PKU {
+@provider sd {
     kind = "pku"
     invoke = {
         redis_preload_folder = "./data"
     }
+}
+
+@provider k8s {
+    kind = "k8s"
+    redis_data = "./data"
 }
