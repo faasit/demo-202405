@@ -57,7 +57,7 @@ def lambda_handler(frt: FaasitRuntime):
     store = frt.storage
     for i in range(preprocessed_images_count):
         key = f"{preprocessed_images_prefix}_{i}.png"
-        stage_list = ["stage0"] + [f"stage0-{idx}" for idx in range(100)]
+        stage_list = ["stage0"] + [f"stage0{idx}" for idx in range(100)]
         for stage in stage_list:
             try:
                 image_bytes = store.get(key, src_stage=stage)
@@ -142,7 +142,7 @@ def lambda_handler(frt: FaasitRuntime):
 
     with open(model_path, "rb") as f:
         model_bytes = f.read()
-    store.put(model_output_key, model_bytes, dest_stages=['stage2-0'])
+    store.put(model_output_key, model_bytes, dest_stages=['stage20'])
     # md.output(['stage2-0'], model_output_key, model_bytes)
 
     if os.path.exists(model_path):

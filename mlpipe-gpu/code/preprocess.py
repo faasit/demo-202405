@@ -53,7 +53,7 @@ def lambda_handler(frt: FaasitRuntime):
             # 构造输入图像的 key，例如 "input_prefix + i.png"
             key = f"{input_prefix}_{i}.png"
             # 从原始（raw）阶段获取图像字节
-            image_bytes = store.get(key)
+            image_bytes = store.get(key, src_stage=None)
             image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
             image_tensor = transform(image)
             processed_tensor = image_tensor
@@ -87,11 +87,11 @@ def lambda_handler(frt: FaasitRuntime):
 
     for output_key, processed_bytes in results:
         # 将处理后的图像通过 md.output 上传到下游（stage1 输入）
-        store.put(output_key, processed_bytes, dest_stages=['stage1-0'])
+        store.put(output_key, processed_bytes, dest_stages=['stage10'])
         # md.output(['stage1-0'], output_key, processed_bytes)
     for output_key, processed_bytes in test_results:
         # 将处理后的图像通过 md.output 上传到下游（stage2 输入）
-        store.put(output_key, processed_bytes, dest_stages=['stage2-0'])
+        store.put(output_key, processed_bytes, dest_stages=['stage20'])
         # md.output(['stage2-0'], output_key, processed_bytes)
 
     end_output = end_compute  # 如果还有独立输出阶段此处再单独记录

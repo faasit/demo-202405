@@ -64,7 +64,8 @@ def lambda_handler(frt: FaasitRuntime):
     # Fetch test images from stage0
     for i in range(test_images_offset, test_images_offset+test_images_count):
         key = f"{test_images_prefix}_{i}.png"
-        stage_list = ["stage0"] + [f"stage0-{idx}" for idx in range(100)]
+        stage_list = ["stage0"] + [f"stage0{idx}" for idx in range(100)]
+        image_bytes = None
         for stage in stage_list:
             try:
                 image_bytes = store.get(key, src_stage=stage)
@@ -79,7 +80,7 @@ def lambda_handler(frt: FaasitRuntime):
         local_image_paths.append(local_path)
 
     # Fetch trained model bytes from stage1
-    model_bytes = store.get(model_key, src_stage='stage1-0')
+    model_bytes = store.get(model_key, src_stage='stage10')
     # model_bytes = md.get_object('stage1-0', model_key)
     input_end = time.time()
 
@@ -198,7 +199,7 @@ def lambda_handler(frt: FaasitRuntime):
     }
 
     metrics_bytes = json.dumps(metrics).encode('utf-8')
-    store.put(metrics_output_key, metrics_bytes, dest_stages=['stage2-0'])
+    store.put(metrics_output_key, metrics_bytes, dest_stages=['stage20'])
     # md.output(['stage2-0'], metrics_output_key, metrics_bytes)
 
     return metrics

@@ -3,12 +3,18 @@
     codeDir = "./code"
     handler = "preprocess.handler"
     baseImage = "faasit-spilot-cuda:0.1"
+    resource = {
+        vcpu = 8000
+    }
 }
 @function stage01 {
     runtime = "python"
     codeDir = "./code"
     handler = "preprocess.handler"
     baseImage = "faasit-spilot-cuda:0.1"
+    resource = {
+        vcpu = 8000
+    }
 }
 
 @function stage10 {
@@ -16,6 +22,11 @@
     codeDir = "./code"
     handler = "train.handler"
     baseImage = "faasit-spilot-cuda:0.1"
+    mount = ["resnet18-f37072fd.pth"]
+    resource = {
+        vcpu = 8000
+        gpu = 2
+    }
 }
 
 @function stage20 {
@@ -23,6 +34,10 @@
     codeDir = "./code"
     handler = "test.handler"
     baseImage = "faasit-spilot-cuda:0.1"
+    resource = {
+        vcpu = 8000
+        gpu = 2
+    }
 }
 
 
@@ -46,6 +61,7 @@
 }
 @provider PKU {
     kind = "pku"
+    registry = "192.168.1.76:5000"
     build = {
         image = "cuda"
     }
